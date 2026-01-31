@@ -162,7 +162,7 @@ public class FacePartSpawner : MonoBehaviour
 
     private void Spawn(FacePart facePart)
     {
-        if (facePart == null || facePart.Sprite == null)
+        if (facePart == null || facePart.FacePartPrefab == null)
         {
             return;
         }
@@ -191,39 +191,22 @@ public class FacePartSpawner : MonoBehaviour
         bool draggable,
         RectTransform moveTargetArea)
     {
-        if (facePart == null || facePart.Sprite == null || parent == null)
+        if (facePart == null || facePart.FacePartPrefab == null || parent == null)
         {
             return;
         }
 
-        GameObject go = new GameObject($"FacePart_{facePart.Id}");
-        go.transform.SetParent(parent, false);
+        GameObject go = Instantiate(facePart.FacePartPrefab, parent);
+        go.name = $"FacePart_{facePart.Id}";
 
-        RectTransform rect = go.AddComponent<RectTransform>();
+        RectTransform rect = go.GetComponent<RectTransform>();
+        if (rect == null)
+        {
+            rect = go.AddComponent<RectTransform>();
+        }
         rect.anchoredPosition = localPosition;
 
-        if (facePart.MaskSprite != null)
-        {
-            SetLayerIfExists(go, "Face");
-
-            Image maskImage = go.AddComponent<Image>();
-            maskImage.sprite = facePart.MaskSprite;
-            maskImage.SetNativeSize();
-            maskImage.raycastTarget = true;
-
-            Image faceImage = EnsureImageChild(go.transform, "Face", facePart.Sprite, false);
-            if (faceImage != null)
-            {
-                faceImage.SetNativeSize();
-            }
-        }
-        else
-        {
-            Image image = go.AddComponent<Image>();
-            image.sprite = facePart.Sprite;
-            image.SetNativeSize();
-            image.raycastTarget = true;
-        }
+        EnsureGraphicRaycaster(go);
 
         if (draggable)
         {
@@ -233,8 +216,8 @@ public class FacePartSpawner : MonoBehaviour
                 canvasToUse = parent.GetComponentInParent<Canvas>();
             }
 
-        FacePartDraggable draggableComponent = go.AddComponent<FacePartDraggable>();
-        draggableComponent.Init(canvasToUse, parent, facePart.AudioClip, manualSpawnTimer);
+            FacePartDraggable draggableComponent = go.AddComponent<FacePartDraggable>();
+            draggableComponent.Init(canvasToUse, parent, facePart.AudioClip, manualSpawnTimer);
         }
 
         if (moveTargetArea != null)
@@ -275,25 +258,18 @@ public class FacePartSpawner : MonoBehaviour
         return new Vector2(parentLocal.x, parentLocal.y);
     }
 
-    private static Image EnsureImageChild(Transform parent, string name, Sprite sprite, bool raycastTarget)
+    private static void EnsureGraphicRaycaster(GameObject root)
     {
-        if (parent == null || sprite == null)
+        if (root == null)
         {
-            return null;
+            return;
         }
 
-        GameObject child = new GameObject(name);
-        child.transform.SetParent(parent, false);
-
-        RectTransform rect = child.AddComponent<RectTransform>();
-        rect.anchoredPosition = Vector2.zero;
-        rect.localRotation = Quaternion.identity;
-        rect.localScale = Vector3.one;
-
-        Image image = child.AddComponent<Image>();
-        image.sprite = sprite;
-        image.raycastTarget = raycastTarget;
-        return image;
+        Graphic[] graphics = root.GetComponentsInChildren<Graphic>(true);
+        foreach (Graphic graphic in graphics)
+        {
+            graphic.raycastTarget = true;
+        }
     }
 
     private static void SetLayerIfExists(GameObject gameObject, string layerName)
