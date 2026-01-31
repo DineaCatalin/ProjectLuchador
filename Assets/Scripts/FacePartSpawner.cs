@@ -25,6 +25,12 @@ public class FacePartSpawner : MonoBehaviour
     [SerializeField] private string manualSpawnUnlimitedText = "∞";
     [SerializeField] private AudioClip manualSpawnErrorClip;
 
+    public Transform PartsParent
+    {
+        get => partsParent;
+        set => partsParent = value;
+    }
+
     private int manualSpawnCount;
 
     public void SpawnRandom(FacePartType type)
