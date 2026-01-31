@@ -6,16 +6,15 @@ using TMPro;
 public class FacePartSpawner : MonoBehaviour
 {
     [SerializeField] private FacePartsDatabase database;
-    [SerializeField] private RectTransform spawnPoint;
+    [SerializeField] private Transform spawnPoint;
     [SerializeField] private RectTransform partsParent;
     [SerializeField] private RectTransform spawnMoveTargetArea;
     [SerializeField] private float spawnMoveDuration = 0.35f;
     [SerializeField] private Ease spawnMoveEase = Ease.OutQuad;
-    [SerializeField] private RectTransform previewArea;
+    [SerializeField] private Transform previewArea;
     [SerializeField] private int previewCount = 20;
     [SerializeField] private bool spawnPreviewOnStart = true;
     [SerializeField] private bool ensurePreviewMask = true;
-    [SerializeField] private Canvas rootCanvas;
     [SerializeField] private int manualSpawnLimit = 0;
     [SerializeField] private TMP_Text manualSpawnRemainingText;
     [SerializeField] private string manualSpawnFormat = "{0}/{1}";
@@ -168,7 +167,7 @@ public class FacePartSpawner : MonoBehaviour
         manualSpawnCount++;
         UpdateManualSpawnUI();
 
-        Vector2 spawnPosition = spawnPoint != null ? spawnPoint.anchoredPosition : Vector2.zero;
+        Vector2 spawnPosition = spawnPoint != null ? spawnPoint.position : Vector2.zero;
         Spawn(facePart, spawnPosition, true, true, spawnMoveTargetArea);
     }
 
@@ -184,10 +183,8 @@ public class FacePartSpawner : MonoBehaviour
             return;
         }
 
-        GameObject go = Instantiate(facePart.FacePartPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);//new GameObject($"FacePart_{facePart.Id}");
+        GameObject go = Instantiate(facePart.FacePartPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         //go.transform.SetParent(parent, false);
-
-        
     }
 
     private void ClearPreview()
@@ -198,12 +195,9 @@ public class FacePartSpawner : MonoBehaviour
         }
     }
 
-    private static Vector2 GetRandomLocalPoint(RectTransform rectTransform)
+    private static Vector2 GetRandomLocalPoint(Transform rectTransform)
     {
-        Rect rect = rectTransform.rect;
-        float x = Random.Range(rect.xMin, rect.xMax);
-        float y = Random.Range(rect.yMin, rect.yMax);
-        return new Vector2(x, y);
+        return Vector2.zero;
     }
 
     private static Vector2 GetRandomLocalPointInParent(RectTransform area, RectTransform parent)
