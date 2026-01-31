@@ -455,13 +455,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FacePartSpawner
   database: {fileID: 11400000, guid: 7f65939fad48d4979b6e37037fce29f7, type: 2}
-  spawnPoint: {fileID: 639839753}
-  partsParent: {fileID: 16462493}
-  spawnMoveTargetArea: {fileID: 1289116035}
+  spawnPoint: {fileID: 1687871299}
+  partsParent: {fileID: 1687871299}
+  spawnMoveTargetArea: {fileID: 1113373070}
   spawnMoveDuration: 0.35
   spawnMoveEase: 6
+  spawnScale: 1
   previewArea: {fileID: 194514098}
-  previewCount: 0
+  previewCount: 50
   spawnPreviewOnStart: 1
   ensurePreviewMask: 1
   manualSpawnLimit: 0
@@ -1191,7 +1192,7 @@ MonoBehaviour:
   _progressSlider: {fileID: 347303839}
   _progressImage: {fileID: 645696656}
   _facePartSpawner: {fileID: 194514099}
-  _textureOverlap: {fileID: 0}
+  _textureOverlap: {fileID: 1479136181}
   _testProgress: 0.8
   _successThreshhold: 0.8
   _delayToNextLevel: 1.5
@@ -2266,6 +2267,7 @@ MonoBehaviour:
   spawnMoveTargetArea: {fileID: 0}
   spawnMoveDuration: 0.35
   spawnMoveEase: 6
+  spawnScale: 1
   previewArea: {fileID: 0}
   previewCount: 20
   spawnPreviewOnStart: 1
@@ -2664,6 +2666,7 @@ MonoBehaviour:
   spawnMoveTargetArea: {fileID: 0}
   spawnMoveDuration: 0.35
   spawnMoveEase: 6
+  spawnScale: 1
   previewArea: {fileID: 0}
   previewCount: 20
   spawnPreviewOnStart: 1
@@ -2985,7 +2988,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 29.069}
+  m_AnchoredPosition: {x: 0, y: 17}
   m_SizeDelta: {x: 500, y: 22.4759}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1546194361
@@ -3202,6 +3205,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1638239625}
   m_CullTransparentMesh: 1
+--- !u!1 &1687871298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1687871299}
+  m_Layer: 0
+  m_Name: Face Part parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1687871299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687871298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.66, y: -0.82, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1725204028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3845,6 +3879,7 @@ MonoBehaviour:
   spawnMoveTargetArea: {fileID: 0}
   spawnMoveDuration: 0.35
   spawnMoveEase: 6
+  spawnScale: 1
   previewArea: {fileID: 0}
   previewCount: 20
   spawnPreviewOnStart: 1
@@ -4006,6 +4041,7 @@ MonoBehaviour:
   spawnMoveTargetArea: {fileID: 0}
   spawnMoveDuration: 0.35
   spawnMoveEase: 6
+  spawnScale: 1
   previewArea: {fileID: 0}
   previewCount: 20
   spawnPreviewOnStart: 1
@@ -4474,4 +4510,5 @@ SceneRoots:
   - {fileID: 1365177875}
   - {fileID: 1811053470}
   - {fileID: 474547838}
+  - {fileID: 1687871299}
   - {fileID: 749621208}
