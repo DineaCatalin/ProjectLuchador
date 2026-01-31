@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,15 +13,16 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private float _progressShowTime = 10f;
     [SerializeField] private Timer _timer;
     [SerializeField] private Button _checkMaskButton;
-    [SerializeField] private Transform _maskTransform;
-    [SerializeField] private Transform _faceTransform;
     [SerializeField] private Transform _faceOutsidePositonTransform;
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Image _progressImage;
     [SerializeField] private FacePartSpawner _facePartSpawner;
     [SerializeField] private TextureOverlap _textureOverlap;
+    [SerializeField] private List<LuchadorView> _luchadors;
+    [SerializeField] private Vector3 _luchardorsSpawnPosition;
 
     private Vector3 _initialMaskPosition;
+    private GameStats _gameStats;
     
     // Test
     [Range(0,1)] [SerializeField]
@@ -39,17 +41,48 @@ public class GameFlow : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         _checkMaskButton?.onClick.AddListener(OnButtonClicked);
-        _initialMaskPosition = _maskTransform.position;
+        
+        _gameStats =  new GameStats
+        {
+            TotalLevels = _luchadors.Count
+        };
+        if (_gameStats.TotalLevels == 0)
+        {
+            Debug.LogError($"{nameof(GameStats)}: No Luchadors, abort == 0");
+        }
     }
 
     private void Start()
     {
-        RestartLevel();
+        StartLevel();
     }
 
-    private void RestartLevel()
+    private LuchadorView _currentLuchador;
+    
+    private void StartLevel()
     {
-        _maskTransform.position = _initialMaskPosition;
+        if (_gameStats.TotalLevels == 0)
+        {
+            return;
+        }
+
+        if (_currentLuchador != null)
+        {
+            Destroy(_currentLuchador.gameObject);
+            _currentLuchador = null;
+        }
+        
+        _gameStats.CurrentLevel++;
+
+        if (_luchadors.Count < _gameStats.CurrentLevel)
+        {
+            Debug.LogError($"{nameof(GameStats)}: _luchadors.Count {_luchadors.Count} < _gameStats.CurrentLevel {_gameStats.CurrentLevel}");
+        }
+
+        var template = _luchadors[_gameStats.CurrentLevel - 1];
+        _currentLuchador = Instantiate(template);
+        _currentLuchador.transform.position = _luchardorsSpawnPosition;
+        
         _checkMaskButton.gameObject.SetActive(true);
         
         _progressSlider.gameObject.SetActive(false);
@@ -58,7 +91,7 @@ public class GameFlow : MonoBehaviour
         //_facePartSpawner?.ResetManualState();
         DOVirtual.DelayedCall(_faceShowTime, () =>
         {
-            _maskTransform.DOMove(_faceOutsidePositonTransform.position, _faceMoveUpTime).SetEase(Ease.OutQuad);
+            _currentLuchador.Mask.DOMove(_faceOutsidePositonTransform.position, _faceMoveUpTime).SetEase(Ease.OutQuad);
             _timer.StartTimer(_timerTime, OnTimerDone);
         });
     }
@@ -80,7 +113,7 @@ public class GameFlow : MonoBehaviour
 
         var successRate = _textureOverlap.PerformEvaluation();
         
-        _maskTransform.DOMove(_faceTransform.position, _progressShowTime).SetEase(Ease.OutQuad);
+        _currentLuchador.Mask.DOMove(_currentLuchador.FaceTarget.position, _progressShowTime).SetEase(Ease.OutQuad);
 
         _progressSlider.DOValue(successRate, _progressShowTime).SetEase(Ease.Linear).OnUpdate(() => {
             if (_progressSlider.value >= _successThreshhold) 
@@ -91,20 +124,37 @@ public class GameFlow : MonoBehaviour
             {
                 _progressImage.color = Color.red; 
             }
-        }).OnComplete(OnSuccessCheckCompleted);
+        }).OnComplete(() => OnSuccessCheckCompleted(_progressSlider.value >= _successThreshhold));
     }
 
     [SerializeField] private float _delayToNextLevel = 1.5f;
     
-    private void OnSuccessCheckCompleted()
+    private void OnSuccessCheckCompleted(bool levelWon)
     {
-        DOVirtual.DelayedCall(_delayToNextLevel, RestartLevel);
+        if (levelWon)
+        {
+            _gameStats.RoundsWon++;
+        }
+        else
+        {
+            _gameStats.RoundsLost++;
+        }
         
-        //RestartLevel();
+        if(_gameStats.CurrentLevel < _gameStats.TotalLevels)
+            DOVirtual.DelayedCall(_delayToNextLevel, StartLevel);
     }
     
     private void OnDestroy()
     {
         _checkMaskButton?.onClick.AddListener(OnButtonClicked);
+    }
+
+    public class GameStats
+    {
+        public int RoundsWon { get; set; }
+        public int RoundsLost  { get; set; }
+        public int CurrentLevel  { get; set; }
+        
+        public int TotalLevels { get; set; }
     }
 }

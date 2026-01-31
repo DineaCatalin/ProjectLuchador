@@ -313,6 +313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1677403797364398084}
+  - component: {fileID: 7829379270628002020}
   m_Layer: 0
   m_Name: Luchador1
   m_TagString: Untagged
@@ -339,3 +340,20 @@ Transform:
   - {fileID: 2550405820546661454}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7829379270628002020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6575651261450834451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9417e52671ef40eeb2a3d2d402d33755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LuchadorView
+  Mask: {fileID: 4407786274261694037}
+  FaceTarget: {fileID: 1456556940685302696}
+  MaxAmountOfParts: 10
+  TimeLimit: 15
+  OverlapThreshold: 0.8
