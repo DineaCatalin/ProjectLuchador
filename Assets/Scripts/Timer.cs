@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -10,13 +11,13 @@ public class Timer : MonoBehaviour
     
     private TweenerCore<float,float,FloatOptions> _timerSequence;
 
-    public void StartTimer(float seconds)
+    public void StartTimer(float seconds, Action onTimerDone)
     {
         _timerImage.fillAmount = 0;
         
         _timerSequence = _timerImage.DOFillAmount(1f, seconds).OnComplete(() =>
         {
-            Debug.Log($"Timer is over!");
+            onTimerDone?.Invoke();
         });
     }
 
