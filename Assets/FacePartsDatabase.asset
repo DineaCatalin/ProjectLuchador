@@ -43,3 +43,87 @@ MonoBehaviour:
     maskSprite: {fileID: 21300000, guid: ee32a997e7d2965089ab8f7a2b51f3c7, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
     weight: 20
+  - id: 5
+    type: 0
+    sprite: {fileID: 4864993932728318626, guid: 4cacd0611ca1b44ae815b2602dddeb6c, type: 3}
+    maskSprite: {fileID: -193415412016997294, guid: 54d5dbf10cf9146298744df6796198df, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 6
+    type: 0
+    sprite: {fileID: 1749559659126183072, guid: 20b258ff515384d51928849ec21c6a62, type: 3}
+    maskSprite: {fileID: 499179945622918879, guid: ab97a5ae973ab4503ab3f634bea2ff0c, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 7
+    type: 0
+    sprite: {fileID: -2844216959244199053, guid: 936f8993e802f438d855111f9c3b9b34, type: 3}
+    maskSprite: {fileID: 3494763516480565804, guid: c32d8140c8d184c8fa4cbaa0769ab9b5, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 8
+    type: 0
+    sprite: {fileID: -1257825950836934260, guid: ab8518bed14384751a9e2b914c4114f9, type: 3}
+    maskSprite: {fileID: -3215110893180456853, guid: b00bd8b7287844615b3c5d70ce89eccb, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 9
+    type: 0
+    sprite: {fileID: 5333093013641271556, guid: c1c368f6f2b1946f4a3d272642cd244d, type: 3}
+    maskSprite: {fileID: -4132576547947467895, guid: d86f74f9eab8d425daea72e51b00bacb, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 10
+    type: 2
+    sprite: {fileID: 7946741686711457174, guid: 5255a4ccdd1c243aa93c795872fb4bfa, type: 3}
+    maskSprite: {fileID: 8730998349230079464, guid: 06e459c33b18e429d89cabddf7a2497b, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 11
+    type: 2
+    sprite: {fileID: -6625966367610531972, guid: 160b4e11c09454eb597d5ad03caa176c, type: 3}
+    maskSprite: {fileID: -387235568303377643, guid: 5812184b5024540ff9091837dba517a5, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 12
+    type: 2
+    sprite: {fileID: 1301541211850832305, guid: 5ab54c791818840d5a023ec1bcc66309, type: 3}
+    maskSprite: {fileID: 343003007908787259, guid: b0ddff76acbc34ebfada1893593ccc33, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 13
+    type: 2
+    sprite: {fileID: 1261513941999263017, guid: 1ad19b7c2ebf749d8a9a79024c2168af, type: 3}
+    maskSprite: {fileID: 4584426733796522648, guid: c9573a2029507401daa5f73659bdf26d, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 14
+    type: 2
+    sprite: {fileID: -3828721772517901038, guid: f9275cf40d69b4f33818d1a09dbbc699, type: 3}
+    maskSprite: {fileID: -8723372517405537293, guid: af4d92f5b06e54fd4acf02604616c884, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 15
+    type: 1
+    sprite: {fileID: -5206577193364523811, guid: f5ace03492d0c4573b84cbf05c6d6e68, type: 3}
+    maskSprite: {fileID: 7983572061495490165, guid: 695f90dbe9e954a09b80948adc840baf, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 16
+    type: 1
+    sprite: {fileID: -8613269764764436106, guid: 657af883d65884efcb63e9a70939b5aa, type: 3}
+    maskSprite: {fileID: -8126024450013847856, guid: 4956511c6157946b4bebf833fc883496, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 17
+    type: 1
+    sprite: {fileID: -436831538990440381, guid: a5c9eaf0a637147babee4daecb2d29bf, type: 3}
+    maskSprite: {fileID: -204508357933709720, guid: aef0d3d44790449a89e26535cce99e5c, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
+  - id: 18
+    type: 1
+    sprite: {fileID: 1905854756291376515, guid: 734dc02bc2b6e45a48e51bbf1a1b564b, type: 3}
+    maskSprite: {fileID: 3813188981376599139, guid: 1511129a430a74f4aa226a92783b419b, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 20
