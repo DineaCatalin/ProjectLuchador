@@ -38,8 +38,10 @@ public class AudioManager : MonoBehaviour
 
     public static void RequestPlay(AudioClip clip)
     {
+        Debug.Log("Playing clip:", clip);
         if (clip == null)
         {
+            Debug.Log("Clip is null");
             return;
         }
 

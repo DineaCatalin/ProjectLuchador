@@ -16,4 +16,4 @@ MonoBehaviour:
   - id: 0
     type: 1
     sprite: {fileID: 9066636188119416626, guid: d23158ca99a93404fb6028d9440f7eea, type: 3}
-    audioClip: {fileID: 8300000, guid: 63993330576344f80979e594e348270a, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
