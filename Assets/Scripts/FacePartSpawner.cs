@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class FacePartSpawner : MonoBehaviour
 {
@@ -15,9 +16,22 @@ public class FacePartSpawner : MonoBehaviour
     [SerializeField] private bool spawnPreviewOnStart = true;
     [SerializeField] private bool ensurePreviewMask = true;
     [SerializeField] private Canvas rootCanvas;
+    [SerializeField] private int manualSpawnLimit = 0;
+    [SerializeField] private TMP_Text manualSpawnRemainingText;
+    [SerializeField] private string manualSpawnFormat = "{0}/{1}";
+    [SerializeField] private string manualSpawnUnlimitedText = "∞";
+    [SerializeField] private AudioClip manualSpawnErrorClip;
+
+    private int manualSpawnCount;
 
     public void SpawnRandom(FacePartType type)
     {
+        if (!CanManualSpawn())
+        {
+            PlayManualSpawnError();
+            return;
+        }
+
         if (database == null)
         {
             Debug.LogWarning("FacePartSpawner has no database assigned.");
@@ -33,24 +47,6 @@ public class FacePartSpawner : MonoBehaviour
         Spawn(facePart);
     }
 
-    public void SpawnAnyRandom()
-    {
-        if (database == null)
-        {
-            Debug.LogWarning("FacePartSpawner has no database assigned.");
-            return;
-        }
-
-        if (!database.TryGetAnyRandom(out FacePart facePart))
-        {
-            Debug.LogWarning($"No face parts found");
-            return;
-        }
-
-        Spawn(facePart);
-    }
-    
-
     public void SpawnRandomByIndex(int typeIndex)
     {
         if (typeIndex < 0 || typeIndex >= System.Enum.GetValues(typeof(FacePartType)).Length)
@@ -60,6 +56,29 @@ public class FacePartSpawner : MonoBehaviour
         }
 
         SpawnRandom((FacePartType)typeIndex);
+    }
+
+    public void SpawnAnyRandom()
+    {
+        if (!CanManualSpawn())
+        {
+            PlayManualSpawnError();
+            return;
+        }
+
+        if (database == null)
+        {
+            Debug.LogWarning("FacePartSpawner has no database assigned.");
+            return;
+        }
+
+        if (!database.TryGetAnyRandom(out FacePart facePart))
+        {
+            Debug.LogWarning("No face parts found for any type.");
+            return;
+        }
+
+        Spawn(facePart);
     }
 
     public void SpawnPreview(FacePartType type)
@@ -125,6 +144,9 @@ public class FacePartSpawner : MonoBehaviour
 
     private void Start()
     {
+        manualSpawnCount = 0;
+        UpdateManualSpawnUI();
+
         if (ensurePreviewMask && previewArea != null)
         {
             EnsurePreviewMask();
@@ -149,6 +171,9 @@ public class FacePartSpawner : MonoBehaviour
             Debug.LogWarning("FacePartSpawner has no spawnPoint or partsParent assigned.");
             return;
         }
+
+        manualSpawnCount++;
+        UpdateManualSpawnUI();
 
         Vector2 spawnPosition = spawnPoint != null ? spawnPoint.anchoredPosition : Vector2.zero;
         Spawn(facePart, parent, spawnPosition, true, true, spawnMoveTargetArea);
@@ -232,6 +257,35 @@ public class FacePartSpawner : MonoBehaviour
         if (previewArea.GetComponent<RectMask2D>() == null)
         {
             previewArea.gameObject.AddComponent<RectMask2D>();
+        }
+    }
+
+    private bool CanManualSpawn()
+    {
+        if (manualSpawnLimit <= 0)
+        {
+            return true;
+        }
+
+        return manualSpawnCount < manualSpawnLimit;
+    }
+
+    private void UpdateManualSpawnUI()
+    {
+        if (manualSpawnRemainingText == null)
+        {
+            return;
+        }
+
+        string limitText = manualSpawnLimit <= 0 ? manualSpawnUnlimitedText : manualSpawnLimit.ToString();
+        manualSpawnRemainingText.text = string.Format(manualSpawnFormat, manualSpawnCount, limitText);
+    }
+
+    private void PlayManualSpawnError()
+    {
+        if (manualSpawnErrorClip != null)
+        {
+            AudioManager.RequestPlay(manualSpawnErrorClip);
         }
     }
 }
