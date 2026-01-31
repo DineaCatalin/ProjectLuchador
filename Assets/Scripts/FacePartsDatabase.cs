@@ -15,10 +15,39 @@ public class FacePartsDatabase : ScriptableObject
         {
             return false;
         }
-        int targetIndex = Random.Range(0, faceParts.Count);
-        
-        facePart = faceParts[targetIndex];
-        return true;
+
+        int totalWeight = 0;
+        for (int i = 0; i < faceParts.Count; i++)
+        {
+            FacePart candidate = faceParts[i];
+            if (candidate != null && candidate.Weight > 0)
+            {
+                totalWeight += candidate.Weight;
+            }
+        }
+
+        if (totalWeight <= 0)
+        {
+            return false;
+        }
+
+        int roll = Random.Range(0, totalWeight);
+        for (int i = 0; i < faceParts.Count; i++)
+        {
+            FacePart candidate = faceParts[i];
+            if (candidate != null && candidate.Weight > 0)
+            {
+                if (roll < candidate.Weight)
+                {
+                    facePart = candidate;
+                    return true;
+                }
+
+                roll -= candidate.Weight;
+            }
+        }
+
+        return false;
     }
 
     public bool TryGetRandom(FacePartType type, out FacePart facePart)
@@ -29,33 +58,34 @@ public class FacePartsDatabase : ScriptableObject
             return false;
         }
 
-        int matchCount = 0;
+        int totalWeight = 0;
         for (int i = 0; i < faceParts.Count; i++)
         {
-            if (faceParts[i] != null && faceParts[i].Type == type)
+            FacePart candidate = faceParts[i];
+            if (candidate != null && candidate.Type == type && candidate.Weight > 0)
             {
-                matchCount++;
+                totalWeight += candidate.Weight;
             }
         }
 
-        if (matchCount == 0)
+        if (totalWeight <= 0)
         {
             return false;
         }
 
-        int targetIndex = Random.Range(0, matchCount);
+        int roll = Random.Range(0, totalWeight);
         for (int i = 0; i < faceParts.Count; i++)
         {
             FacePart candidate = faceParts[i];
-            if (candidate != null && candidate.Type == type)
+            if (candidate != null && candidate.Type == type && candidate.Weight > 0)
             {
-                if (targetIndex == 0)
+                if (roll < candidate.Weight)
                 {
                     facePart = candidate;
                     return true;
                 }
 
-                targetIndex--;
+                roll -= candidate.Weight;
             }
         }
 

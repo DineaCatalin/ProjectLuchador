@@ -8,11 +8,13 @@ public class FacePartDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler,
     private RectTransform dragParent;
     private Canvas rootCanvas;
     private CanvasGroup canvasGroup;
+    private AudioClip dragReleaseClip;
 
-    public void Init(Canvas canvas, RectTransform parent)
+    public void Init(Canvas canvas, RectTransform parent, AudioClip onReleaseClip)
     {
         rootCanvas = canvas;
         dragParent = parent;
+        dragReleaseClip = onReleaseClip;
     }
 
     private void Awake()
@@ -55,6 +57,11 @@ public class FacePartDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler,
         if (canvasGroup != null)
         {
             canvasGroup.blocksRaycasts = true;
+        }
+
+        if (dragReleaseClip != null)
+        {
+            AudioManager.RequestPlay(dragReleaseClip);
         }
     }
 }
