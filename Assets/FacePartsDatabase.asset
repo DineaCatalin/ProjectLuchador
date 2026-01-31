@@ -17,3 +17,19 @@ MonoBehaviour:
     type: 1
     sprite: {fileID: 9066636188119416626, guid: d23158ca99a93404fb6028d9440f7eea, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+  - id: 1
+    type: 0
+    sprite: {fileID: 21300000, guid: 8702b7073f3c2e7b996234e3fc51977d, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+  - id: 2
+    type: 0
+    sprite: {fileID: 21300000, guid: 6869e39c02cf8d241b73b206b67a150d, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+  - id: 3
+    type: 1
+    sprite: {fileID: 21300000, guid: 88cc214d9a90c58908c421af534440e7, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+  - id: 4
+    type: 2
+    sprite: {fileID: 21300000, guid: 66e95573d26eebb8facd4d4027737a2e, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}

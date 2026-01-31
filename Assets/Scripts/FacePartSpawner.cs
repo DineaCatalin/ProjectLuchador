@@ -25,6 +25,24 @@ public class FacePartSpawner : MonoBehaviour
         Spawn(facePart);
     }
 
+    public void SpawnAnyRandom()
+    {
+        if (database == null)
+        {
+            Debug.LogWarning("FacePartSpawner has no database assigned.");
+            return;
+        }
+
+        if (!database.TryGetAnyRandom(out FacePart facePart))
+        {
+            Debug.LogWarning($"No face parts found");
+            return;
+        }
+
+        Spawn(facePart);
+    }
+    
+
     public void SpawnRandomByIndex(int typeIndex)
     {
         if (typeIndex < 0 || typeIndex >= System.Enum.GetValues(typeof(FacePartType)).Length)
