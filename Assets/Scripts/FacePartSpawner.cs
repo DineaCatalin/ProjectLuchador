@@ -6,11 +6,12 @@ using TMPro;
 public class FacePartSpawner : MonoBehaviour
 {
     [SerializeField] private FacePartsDatabase database;
-    [SerializeField] private RectTransform spawnPoint;
-    [SerializeField] private RectTransform partsParent;
-    [SerializeField] private RectTransform spawnMoveTargetArea;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform partsParent;
+    [SerializeField] private Transform spawnMoveTargetArea;
     [SerializeField] private float spawnMoveDuration = 0.35f;
     [SerializeField] private Ease spawnMoveEase = Ease.OutQuad;
+    [SerializeField] private float spawnScale = 1f;
     [SerializeField] private RectTransform previewArea;
     [SerializeField] private int previewCount = 20;
     [SerializeField] private bool spawnPreviewOnStart = true;
@@ -167,24 +168,26 @@ public class FacePartSpawner : MonoBehaviour
         manualSpawnCount++;
         UpdateManualSpawnUI();
 
-        RectTransform parent = partsParent != null ? partsParent : spawnPoint;
+        Transform parent = partsParent != null ? partsParent : spawnPoint;
         if (parent == null)
         {
             Debug.LogWarning("FacePartSpawner has no partsParent or spawnPoint assigned.");
             return;
         }
 
-        Vector2 spawnPosition = spawnPoint != null ? spawnPoint.anchoredPosition : Vector2.zero;
+        Vector2 spawnPosition = spawnPoint != null
+            ? new Vector2(spawnPoint.position.x, spawnPoint.position.y)
+            : Vector2.zero;
         Spawn(facePart, parent, spawnPosition, true, true, spawnMoveTargetArea);
     }
 
     private void Spawn(
         FacePart facePart,
-        RectTransform parent,
+        Transform parent,
         Vector2 localPosition,
         bool playAudio,
         bool draggable,
-        RectTransform moveTargetArea)
+        Transform moveTargetArea)
     {
         if (facePart == null || facePart.FacePartPrefab == null || parent == null)
         {
@@ -193,20 +196,36 @@ public class FacePartSpawner : MonoBehaviour
 
         GameObject go = Instantiate(facePart.FacePartPrefab, parent);
         go.name = $"FacePart_{facePart.Id}";
+        if (spawnScale != 1f)
+        {
+            go.transform.localScale = Vector3.one * spawnScale;
+        }
 
         RectTransform rect = go.GetComponent<RectTransform>();
-        if (rect == null)
+        if (rect != null)
         {
-            rect = go.AddComponent<RectTransform>();
+            rect.anchoredPosition = localPosition;
         }
-        rect.anchoredPosition = localPosition;
+        else
+        {
+            go.transform.position = new Vector3(localPosition.x, localPosition.y, go.transform.position.z);
+        }
 
         if (moveTargetArea != null)
         {
-            Vector2 targetPos = GetRandomLocalPointInParent(moveTargetArea, parent);
-            rect.DOAnchorPos(targetPos, spawnMoveDuration)
-                .SetEase(spawnMoveEase)
-                .SetTarget(rect);
+            Vector3 targetPos = GetRandomWorldPoint(moveTargetArea);
+            if (rect != null)
+            {
+                rect.DOMove(targetPos, spawnMoveDuration)
+                    .SetEase(spawnMoveEase)
+                    .SetTarget(rect);
+            }
+            else
+            {
+                go.transform.DOMove(targetPos, spawnMoveDuration)
+                    .SetEase(spawnMoveEase)
+                    .SetTarget(go.transform);
+            }
         }
 
         if (playAudio && facePart.AudioClip != null)
@@ -231,33 +250,39 @@ public class FacePartSpawner : MonoBehaviour
         return new Vector2(x, y);
     }
 
-    private static Vector2 GetRandomLocalPointInParent(RectTransform area, RectTransform parent)
+    private static Vector3 GetRandomWorldPoint(Transform area)
     {
-        Vector2 localPoint = GetRandomLocalPoint(area);
-        Vector3 worldPoint = area.TransformPoint(localPoint);
-        Vector3 parentLocal = parent.InverseTransformPoint(worldPoint);
-        return new Vector2(parentLocal.x, parentLocal.y);
-    }
-
-    private static Image EnsureImageChild(Transform parent, string name, Sprite sprite, bool raycastTarget)
-    {
-        if (parent == null || sprite == null)
+        if (area == null)
         {
-            return null;
+            return Vector3.zero;
         }
 
-        GameObject child = new GameObject(name);
-        child.transform.SetParent(parent, false);
+        RectTransform rectTransform = area as RectTransform;
+        if (rectTransform != null)
+        {
+            Vector2 localPoint = GetRandomLocalPoint(rectTransform);
+            return rectTransform.TransformPoint(localPoint);
+        }
 
-        RectTransform rect = child.AddComponent<RectTransform>();
-        rect.anchoredPosition = Vector2.zero;
-        rect.localRotation = Quaternion.identity;
-        rect.localScale = Vector3.one;
+        Collider2D collider2d = area.GetComponent<Collider2D>();
+        if (collider2d != null)
+        {
+            Bounds bounds = collider2d.bounds;
+            float x = Random.Range(bounds.min.x, bounds.max.x);
+            float y = Random.Range(bounds.min.y, bounds.max.y);
+            return new Vector3(x, y, area.position.z);
+        }
 
-        Image image = child.AddComponent<Image>();
-        image.sprite = sprite;
-        image.raycastTarget = raycastTarget;
-        return image;
+        Renderer renderer = area.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Bounds bounds = renderer.bounds;
+            float x = Random.Range(bounds.min.x, bounds.max.x);
+            float y = Random.Range(bounds.min.y, bounds.max.y);
+            return new Vector3(x, y, area.position.z);
+        }
+
+        return area.position;
     }
 
     private static void SetLayerIfExists(GameObject gameObject, string layerName)
