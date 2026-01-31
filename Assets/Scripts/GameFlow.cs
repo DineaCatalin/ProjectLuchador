@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class GameFlow : MonoBehaviour
 {
     public static GameFlow Instance { get; private set; }
-    
+
+    [SerializeField] private Canvas _gameplayCanvas;
+    [SerializeField] private Canvas _vsCanvas;
     [SerializeField] private float _timerTime = 10f;
     [SerializeField] private float _faceMoveUpTime = 1.5f;
     [SerializeField] private float _faceShowTime = 2;
@@ -20,6 +22,8 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private TextureOverlap _textureOverlap;
     [SerializeField] private List<LuchadorView> _luchadors;
     [SerializeField] private Vector3 _luchardorsSpawnPosition;
+    [SerializeField] private Vector3 _vsLuchador1Position;
+    [SerializeField] private Vector3 _vsLuchador2Position;
 
     private Vector3 _initialMaskPosition;
     private GameStats _gameStats;
@@ -176,6 +180,7 @@ public class GameFlow : MonoBehaviour
     }
 
     [SerializeField] private float _delayToNextLevel = 1.5f;
+    [SerializeField] private float _vsShowOffDelay = 3f;
     
     private void OnSuccessCheckCompleted(bool levelWon)
     {
@@ -187,9 +192,38 @@ public class GameFlow : MonoBehaviour
         {
             _gameStats.RoundsLost++;
         }
-        
-        if(_gameStats.CurrentLevel < _gameStats.TotalLevels)
+
+        if (_luchadorsSpawned.Count == 2)
+            DOVirtual.DelayedCall(_delayToNextLevel, ShowVSMode);
+        else if(_gameStats.CurrentLevel < _gameStats.TotalLevels)
             DOVirtual.DelayedCall(_delayToNextLevel, StartLevel);
+    }
+
+    private void ShowVSMode()
+    {
+        _gameplayCanvas.enabled = false;
+        //_vsCanvas.enabled = true;
+
+        _luchadorsSpawned[0].transform.position = _vsLuchador1Position;
+        _luchadorsSpawned[1].transform.position = _vsLuchador2Position;
+            
+        if(_gameStats.CurrentLevel < _gameStats.TotalLevels)
+            DOVirtual.DelayedCall(_vsShowOffDelay, () =>
+            {
+                foreach (var luchador in _luchadorsSpawned)
+                {
+                    if (luchador != null)
+                    {
+                        Destroy(luchador.gameObject);
+                    }
+                }
+        
+                _luchadorsSpawned.Clear();
+                
+                _gameplayCanvas.enabled = true;
+                //_vsCanvas.enabled = false;
+                StartLevel();
+            });
     }
     
     private void OnDestroy()
