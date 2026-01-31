@@ -200,6 +200,8 @@ public class FacePartSpawner : MonoBehaviour
 
         if (facePart.MaskSprite != null)
         {
+            SetLayerIfExists(go, "Face");
+
             Image maskImage = go.AddComponent<Image>();
             maskImage.sprite = facePart.MaskSprite;
             maskImage.SetNativeSize();
@@ -288,6 +290,23 @@ public class FacePartSpawner : MonoBehaviour
         image.sprite = sprite;
         image.raycastTarget = raycastTarget;
         return image;
+    }
+
+    private static void SetLayerIfExists(GameObject gameObject, string layerName)
+    {
+        if (gameObject == null)
+        {
+            return;
+        }
+
+        int layer = LayerMask.NameToLayer(layerName);
+        if (layer < 0)
+        {
+            Debug.LogWarning($"Layer '{layerName}' not found. Create it in Project Settings > Tags and Layers.");
+            return;
+        }
+
+        gameObject.layer = layer;
     }
 
     private void EnsurePreviewMask()
