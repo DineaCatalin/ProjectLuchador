@@ -7,11 +7,14 @@ public class GameFlow : MonoBehaviour
     public static GameFlow Instance { get; private set; }
     
     [SerializeField] private float _timerTime = 10f;
+    [SerializeField] private float _faceShowTime = 2;
+    [SerializeField] private float _faceMoveUpTime = 1.5f;
     [SerializeField] private float _progressShowTime = 10f;
     [SerializeField] private Timer _timer;
     [SerializeField] private Button _checkMaskButton;
     [SerializeField] private RectTransform _maskTransform;
     [SerializeField] private RectTransform _faceTransform;
+    [SerializeField] private RectTransform _faceOutsidePositonTransform;
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Image _progressImage;
 
@@ -46,9 +49,15 @@ public class GameFlow : MonoBehaviour
     {
         _maskTransform.position = _initialMaskPosition;
         _checkMaskButton.gameObject.SetActive(true);
-        _timer.StartTimer(_timerTime, OnTimerDone);
+        
         _progressSlider.gameObject.SetActive(false);
         _progressImage.gameObject.SetActive(false);
+        
+        DOVirtual.DelayedCall(_faceShowTime, () =>
+        {
+            _maskTransform.DOMove(_faceOutsidePositonTransform.position, _faceMoveUpTime).SetEase(Ease.OutQuad);
+            _timer.StartTimer(_timerTime, OnTimerDone);
+        });
     }
     
     private void OnButtonClicked()
@@ -66,7 +75,7 @@ public class GameFlow : MonoBehaviour
         _progressImage.gameObject.SetActive(true);
         _progressImage.color = Color.darkRed;
         
-        _maskTransform.DOMove(_faceTransform.position, _progressShowTime).SetEase(Ease.OutQuad);
+        _maskTransform.DOMove(_initialMaskPosition, _progressShowTime).SetEase(Ease.OutQuad);
         
         _progressSlider.DOValue(_testProgress, _progressShowTime).SetEase(Ease.Linear).OnUpdate(() => {
             if (_progressSlider.value >= _successThreshhold) 
