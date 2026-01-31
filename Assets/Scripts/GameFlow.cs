@@ -58,6 +58,7 @@ public class GameFlow : MonoBehaviour
     }
 
     private LuchadorView _currentLuchador;
+    private List<LuchadorView> _luchadorsSpawned = new();
     
     private void StartLevel()
     {
@@ -68,7 +69,8 @@ public class GameFlow : MonoBehaviour
 
         if (_currentLuchador != null)
         {
-            Destroy(_currentLuchador.gameObject);
+            _currentLuchador.transform.position = new Vector3(100, 0, 0);
+            DeleteFacePartsThatAreNotOnFace(_currentLuchador);
             _currentLuchador = null;
         }
         
@@ -79,10 +81,12 @@ public class GameFlow : MonoBehaviour
             Debug.LogError($"{nameof(GameStats)}: _luchadors.Count {_luchadors.Count} < _gameStats.CurrentLevel {_gameStats.CurrentLevel}");
         }
 
-        _facePartSpawner.DeleteFaceParts();
+        //_facePartSpawner.DeleteFaceParts();
 
         var template = _luchadors[_gameStats.CurrentLevel - 1];
         _currentLuchador = Instantiate(template);
+        _luchadorsSpawned.Add(_currentLuchador);
+        _facePartSpawner.PartsParent = _currentLuchador.FacePartsContainer;
         _currentLuchador.transform.position = _luchardorsSpawnPosition;
         
         _checkMaskButton.gameObject.SetActive(true);
@@ -92,12 +96,50 @@ public class GameFlow : MonoBehaviour
         
         CursorController.Instance.CanDrag = true;
 
-        //_facePartSpawner?.ResetManualState();
         DOVirtual.DelayedCall(_faceShowTime, () =>
         {
             _currentLuchador.Mask.DOMove(_faceOutsidePositonTransform.position, _faceMoveUpTime).SetEase(Ease.OutQuad);
             _timer.StartTimer(_timerTime, OnTimerDone);
         });
+    }
+
+    private void DeleteFacePartsThatAreNotOnFace(LuchadorView luchador)
+    {
+        Renderer maskRenderer = luchador.Mask.GetComponent<Renderer>();
+
+        if (maskRenderer != null)
+        {
+            // Use the mask's world bounds as the "safe zone"
+            Bounds maskBounds = maskRenderer.bounds;
+        
+            for (int i = luchador.FacePartsContainer.childCount - 1; i >= 0; i--)
+            {
+                Transform facePart = luchador.FacePartsContainer.GetChild(i);
+            
+                // 1. Get all renderers in the children (e.g., the base eye and the pupil)
+                Renderer[] childRenderers = facePart.GetComponentsInChildren<Renderer>();
+
+                if (childRenderers.Length > 0)
+                {
+                    // 2. Initialize the bounds with the first child's renderer
+                    Bounds combinedBounds = childRenderers[0].bounds;
+
+                    // 3. Expand the bounds to include all other child renderers
+                    for (int j = 1; j < childRenderers.Length; j++)
+                    {
+                        combinedBounds.Encapsulate(childRenderers[j].bounds);
+                    }
+
+                    // 4. Check if the entire combined box is within the mask
+                    if (!maskBounds.Contains(combinedBounds.min) || 
+                        !maskBounds.Contains(combinedBounds.max))
+                    {
+                        Debug.Log($"Deleting {facePart.name} because it was outside bounds.");
+                        Destroy(facePart.gameObject);
+                    }
+                }
+            }
+        }
     }
     
     private void OnButtonClicked()

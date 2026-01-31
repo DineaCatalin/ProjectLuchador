@@ -5,6 +5,7 @@ public class LuchadorView : MonoBehaviour
     [Header("References")]
     public Transform Mask;
     public Transform FaceTarget;
+    public Transform FacePartsContainer;
 
     [Header("Game Settings")]
     [Tooltip("The total number of face parts the player can spawn.")]
