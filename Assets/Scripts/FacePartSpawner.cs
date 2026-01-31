@@ -198,9 +198,26 @@ public class FacePartSpawner : MonoBehaviour
         RectTransform rect = go.AddComponent<RectTransform>();
         rect.anchoredPosition = localPosition;
 
-        Image image = go.AddComponent<Image>();
-        image.sprite = facePart.Sprite;
-        image.SetNativeSize();
+        if (facePart.MaskSprite != null)
+        {
+            Image maskImage = go.AddComponent<Image>();
+            maskImage.sprite = facePart.MaskSprite;
+            maskImage.SetNativeSize();
+            maskImage.raycastTarget = true;
+
+            Image faceImage = EnsureImageChild(go.transform, "Face", facePart.Sprite, false);
+            if (faceImage != null)
+            {
+                faceImage.SetNativeSize();
+            }
+        }
+        else
+        {
+            Image image = go.AddComponent<Image>();
+            image.sprite = facePart.Sprite;
+            image.SetNativeSize();
+            image.raycastTarget = true;
+        }
 
         if (draggable)
         {
@@ -250,6 +267,27 @@ public class FacePartSpawner : MonoBehaviour
         Vector3 worldPoint = area.TransformPoint(localPoint);
         Vector3 parentLocal = parent.InverseTransformPoint(worldPoint);
         return new Vector2(parentLocal.x, parentLocal.y);
+    }
+
+    private static Image EnsureImageChild(Transform parent, string name, Sprite sprite, bool raycastTarget)
+    {
+        if (parent == null || sprite == null)
+        {
+            return null;
+        }
+
+        GameObject child = new GameObject(name);
+        child.transform.SetParent(parent, false);
+
+        RectTransform rect = child.AddComponent<RectTransform>();
+        rect.anchoredPosition = Vector2.zero;
+        rect.localRotation = Quaternion.identity;
+        rect.localScale = Vector3.one;
+
+        Image image = child.AddComponent<Image>();
+        image.sprite = sprite;
+        image.raycastTarget = raycastTarget;
+        return image;
     }
 
     private void EnsurePreviewMask()
