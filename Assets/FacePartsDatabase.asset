@@ -13,28 +13,93 @@ MonoBehaviour:
   m_Name: FacePartsDatabase
   m_EditorClassIdentifier: Assembly-CSharp::FacePartsDatabase
   faceParts:
-  - id: 0
-    type: 1
-    facePartPrefab: {fileID: 8128813389668517184, guid: cedbc7a2b78c4a0c0a7221f5e4fcc16f, type: 3}
-    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
-    weight: 3
-  - id: 1
+  - id: eye2
     type: 0
-    facePartPrefab: {fileID: 7548229236794781984, guid: 644460341f41fffae82df8434e9db6e1, type: 3}
+    facePartPrefab: {fileID: 1994423865622009635, guid: f489db227abae49dbb18ffeeef617b7b, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
-    weight: 20
-  - id: 2
+    weight: 10
+  - id: eye3
     type: 0
-    facePartPrefab: {fileID: 8128813389668517184, guid: cedbc7a2b78c4a0c0a7221f5e4fcc16f, type: 3}
+    facePartPrefab: {fileID: 4089848258689305661, guid: 9f501f8ddd8d445b8ba0f4ca9bdbdd14, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
-    weight: 20
-  - id: 3
-    type: 1
-    facePartPrefab: {fileID: 7548229236794781984, guid: 644460341f41fffae82df8434e9db6e1, type: 3}
+    weight: 10
+  - id: eye4
+    type: 0
+    facePartPrefab: {fileID: 4821732845216885054, guid: c8e021fac059b4cdfb9d8e6d65ef6f0d, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
-    weight: 20
-  - id: 4
+    weight: 10
+  - id: eye5
+    type: 0
+    facePartPrefab: {fileID: 432592196864724685, guid: 7ab04887cf49340f8b340df05410ba6b, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: eye6
+    type: 0
+    facePartPrefab: {fileID: 551244726092141497, guid: a2f36655e18c04b75b0142bc2e82dc78, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: mouth1
     type: 2
-    facePartPrefab: {fileID: 17157579003446753, guid: 0799f7e29a1e17196993e676be6c6b01, type: 3}
+    facePartPrefab: {fileID: 4038302216026899603, guid: f3b3c96f3c7814604ad5f22058739068, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
-    weight: 20
+    weight: 10
+  - id: mouth2
+    type: 2
+    facePartPrefab: {fileID: 2022671726698847163, guid: f2622de8d9f1141bcad440d6f36a4edf, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: mouth3
+    type: 2
+    facePartPrefab: {fileID: 6061240588651037883, guid: a6acd1f01474f4834ab567efe55eddf5, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: mouth4
+    type: 2
+    facePartPrefab: {fileID: 1021140713410973589, guid: 9e2f32d68aad947358c529d0072f7326, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: mouth5
+    type: 2
+    facePartPrefab: {fileID: 2461662533949716584, guid: 8da21038cf865401e95760bd98df2336, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: mouth6
+    type: 2
+    facePartPrefab: {fileID: 4570805095456617629, guid: 47eab5c21fbf54ea788f7de358f41411, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose1
+    type: 1
+    facePartPrefab: {fileID: 1192313189032055025, guid: 664d8f622787f450a87c62de182c7236, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose2
+    type: 1
+    facePartPrefab: {fileID: 7078309858747848977, guid: 84f8d4d7371e14d54aba36049e41f812, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose3
+    type: 1
+    facePartPrefab: {fileID: 5985495721297828493, guid: 82f3c4c90b1ac4c2eab78c0a33eb664f, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose5
+    type: 1
+    facePartPrefab: {fileID: 7737684007167860833, guid: 700f9969ef0474b39bdf0f07f57130d7, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose6
+    type: 1
+    facePartPrefab: {fileID: 4156058452112071149, guid: 063aae4f9b1b94052a71ddced2a7437d, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose_real
+    type: 1
+    facePartPrefab: {fileID: 2949996070192546938, guid: 6419f167c1c33455ca5da831c04705c9, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: right_eye_1
+    type: 0
+    facePartPrefab: {fileID: 308922085734396653, guid: f2c2ca305939d4d98b092ab0a29e0d43, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
