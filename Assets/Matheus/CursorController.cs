@@ -146,7 +146,6 @@ public class CursorController : MonoBehaviour
         foundObjectReference.transform.position = mousePos;// + offset;
         if(!leftClickPressed)
         {
-            Debug.Log("Passei aqui");
             ChangeState(CursorState.Neutral);
         }
     }
