@@ -457,11 +457,11 @@ MonoBehaviour:
   database: {fileID: 11400000, guid: 7f65939fad48d4979b6e37037fce29f7, type: 2}
   spawnPoint: {fileID: 639839753}
   partsParent: {fileID: 16462493}
-  spawnMoveTargetArea: {fileID: 0}
+  spawnMoveTargetArea: {fileID: 1289116035}
   spawnMoveDuration: 0.35
   spawnMoveEase: 6
   previewArea: {fileID: 194514098}
-  previewCount: 20
+  previewCount: 0
   spawnPreviewOnStart: 1
   ensurePreviewMask: 1
   manualSpawnLimit: 0
@@ -1191,7 +1191,7 @@ MonoBehaviour:
   _progressSlider: {fileID: 347303839}
   _progressImage: {fileID: 645696656}
   _facePartSpawner: {fileID: 194514099}
-  _textureOverlap: {fileID: 1479136181}
+  _textureOverlap: {fileID: 0}
   _testProgress: 0.8
   _successThreshhold: 0.8
   _delayToNextLevel: 1.5

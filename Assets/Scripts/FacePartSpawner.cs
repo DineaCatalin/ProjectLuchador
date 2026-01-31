@@ -6,12 +6,12 @@ using TMPro;
 public class FacePartSpawner : MonoBehaviour
 {
     [SerializeField] private FacePartsDatabase database;
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private RectTransform spawnPoint;
     [SerializeField] private RectTransform partsParent;
     [SerializeField] private RectTransform spawnMoveTargetArea;
     [SerializeField] private float spawnMoveDuration = 0.35f;
     [SerializeField] private Ease spawnMoveEase = Ease.OutQuad;
-    [SerializeField] private Transform previewArea;
+    [SerializeField] private RectTransform previewArea;
     [SerializeField] private int previewCount = 20;
     [SerializeField] private bool spawnPreviewOnStart = true;
     [SerializeField] private bool ensurePreviewMask = true;
@@ -100,7 +100,7 @@ public class FacePartSpawner : MonoBehaviour
             if (database.TryGetRandom(type, out FacePart facePart))
             {
                 Vector2 localPos = GetRandomLocalPoint(previewArea);
-                Spawn(facePart, localPos, false, false, null);
+                Spawn(facePart, previewArea, localPos, false, false, null);
             }
         }
     }
@@ -136,7 +136,7 @@ public class FacePartSpawner : MonoBehaviour
             if (database.TryGetAnyRandom(out FacePart facePart))
             {
                 Vector2 localPos = GetRandomLocalPoint(previewArea);
-                Spawn(facePart, localPos, false, false, null);
+                Spawn(facePart, previewArea, localPos, false, false, null);
             }
         }
     }
@@ -167,24 +167,52 @@ public class FacePartSpawner : MonoBehaviour
         manualSpawnCount++;
         UpdateManualSpawnUI();
 
-        Vector2 spawnPosition = spawnPoint != null ? spawnPoint.position : Vector2.zero;
-        Spawn(facePart, spawnPosition, true, true, spawnMoveTargetArea);
+        RectTransform parent = partsParent != null ? partsParent : spawnPoint;
+        if (parent == null)
+        {
+            Debug.LogWarning("FacePartSpawner has no partsParent or spawnPoint assigned.");
+            return;
+        }
+
+        Vector2 spawnPosition = spawnPoint != null ? spawnPoint.anchoredPosition : Vector2.zero;
+        Spawn(facePart, parent, spawnPosition, true, true, spawnMoveTargetArea);
     }
 
     private void Spawn(
         FacePart facePart,
+        RectTransform parent,
         Vector2 localPosition,
         bool playAudio,
         bool draggable,
         RectTransform moveTargetArea)
     {
-        if (facePart == null || facePart.FacePartPrefab == null)
+        if (facePart == null || facePart.FacePartPrefab == null || parent == null)
         {
             return;
         }
 
-        GameObject go = Instantiate(facePart.FacePartPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-        //go.transform.SetParent(parent, false);
+        GameObject go = Instantiate(facePart.FacePartPrefab, parent);
+        go.name = $"FacePart_{facePart.Id}";
+
+        RectTransform rect = go.GetComponent<RectTransform>();
+        if (rect == null)
+        {
+            rect = go.AddComponent<RectTransform>();
+        }
+        rect.anchoredPosition = localPosition;
+
+        if (moveTargetArea != null)
+        {
+            Vector2 targetPos = GetRandomLocalPointInParent(moveTargetArea, parent);
+            rect.DOAnchorPos(targetPos, spawnMoveDuration)
+                .SetEase(spawnMoveEase)
+                .SetTarget(rect);
+        }
+
+        if (playAudio && facePart.AudioClip != null)
+        {
+            AudioManager.RequestPlay(facePart.AudioClip);
+        }
     }
 
     private void ClearPreview()
@@ -195,9 +223,12 @@ public class FacePartSpawner : MonoBehaviour
         }
     }
 
-    private static Vector2 GetRandomLocalPoint(Transform rectTransform)
+    private static Vector2 GetRandomLocalPoint(RectTransform rectTransform)
     {
-        return Vector2.zero;
+        Rect rect = rectTransform.rect;
+        float x = Random.Range(rect.xMin, rect.xMax);
+        float y = Random.Range(rect.yMin, rect.yMax);
+        return new Vector2(x, y);
     }
 
     private static Vector2 GetRandomLocalPointInParent(RectTransform area, RectTransform parent)
