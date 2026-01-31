@@ -6,6 +6,7 @@ public class FacePartSpawner : MonoBehaviour
     [SerializeField] private FacePartsDatabase database;
     [SerializeField] private RectTransform spawnPoint;
     [SerializeField] private RectTransform partsParent;
+    [SerializeField] private Canvas rootCanvas;
 
     public void SpawnRandom(FacePartType type)
     {
@@ -63,6 +64,15 @@ public class FacePartSpawner : MonoBehaviour
         Image image = go.AddComponent<Image>();
         image.sprite = facePart.Sprite;
         image.SetNativeSize();
+
+        Canvas canvasToUse = rootCanvas;
+        if (canvasToUse == null)
+        {
+            canvasToUse = parent.GetComponentInParent<Canvas>();
+        }
+
+        FacePartDraggable draggable = go.AddComponent<FacePartDraggable>();
+        draggable.Init(canvasToUse, parent);
 
         if (facePart.AudioClip != null)
         {
