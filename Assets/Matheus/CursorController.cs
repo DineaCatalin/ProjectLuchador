@@ -12,6 +12,7 @@ public class CursorController : MonoBehaviour
 {
 
     public static CursorController Instance { get; private set; }
+    public bool CanDrag;
 
     [Header("Cursor Config")]
     private Vector2 clickPosition = Vector2.zero;
@@ -167,7 +168,7 @@ public class CursorController : MonoBehaviour
         CheckObjectHover();
         if(leftClickPressed)
         {
-            if(foundObjectReference != null)
+            if(foundObjectReference != null && CanDrag)
             {
                 ChangeState(CursorState.Clicking);
             }

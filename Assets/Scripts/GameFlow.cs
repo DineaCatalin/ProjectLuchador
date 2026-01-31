@@ -89,6 +89,8 @@ public class GameFlow : MonoBehaviour
         
         _progressSlider.gameObject.SetActive(false);
         _progressImage.gameObject.SetActive(false);
+        
+        CursorController.Instance.CanDrag = true;
 
         //_facePartSpawner?.ResetManualState();
         DOVirtual.DelayedCall(_faceShowTime, () =>
@@ -112,6 +114,8 @@ public class GameFlow : MonoBehaviour
         _progressSlider.value = 0;
         _progressImage.gameObject.SetActive(true);
         _progressImage.color = Color.darkRed;
+
+        CursorController.Instance.CanDrag = false;
 
         var successRate = _textureOverlap.PerformEvaluation();
         
