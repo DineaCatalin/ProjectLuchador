@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Image _progressImage;
     [SerializeField] private FacePartSpawner _facePartSpawner;
+    [SerializeField] private VisibilityScanner _visibilityScanner;
 
     private Vector3 _initialMaskPosition;
     
@@ -95,6 +97,20 @@ public class GameFlow : MonoBehaviour
     
     private void OnSuccessCheckCompleted()
     {
+        _progressSlider.value = 0;
+
+        try
+        {
+            var fillingPercentage = _visibilityScanner.GetIntersectionScore();
+            Debug.Log($"fillingPercentage {fillingPercentage}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{e.Message} {e.StackTrace}");
+            throw;
+        }
+        
+        
         DOVirtual.DelayedCall(_delayToNextLevel, RestartLevel);
         
         //RestartLevel();
