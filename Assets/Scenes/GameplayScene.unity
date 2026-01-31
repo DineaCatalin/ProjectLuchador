@@ -1191,7 +1191,7 @@ MonoBehaviour:
   _faceOutsidePositonTransform: {fileID: 747452179}
   _progressSlider: {fileID: 347303839}
   _progressImage: {fileID: 645696656}
-  _facePartSpawner: {fileID: 0}
+  _facePartSpawner: {fileID: 194514099}
   _testProgress: 0.8
   _successThreshhold: 0.8
   _delayToNextLevel: 1.5
