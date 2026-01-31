@@ -375,6 +375,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed46d77c01a8943cfb6fd6bccbeefb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFlow
+  _gameplayCanvas: {fileID: 1725204031}
+  _vsCanvas: {fileID: 0}
   _timerTime: 10
   _faceMoveUpTime: 1.5
   _faceShowTime: 2
@@ -392,9 +394,12 @@ MonoBehaviour:
   - {fileID: 2664078230383889920, guid: f7d57591847c71aeaa6a062f15b0a7b4, type: 3}
   - {fileID: 989125562151938384, guid: 4b9d709e8779c4ea9bbd7bb8fa720ce6, type: 3}
   _luchardorsSpawnPosition: {x: 3.23, y: 0, z: 0}
+  _vsLuchador1Position: {x: 5, y: 0, z: 0}
+  _vsLuchador2Position: {x: -5, y: 0, z: 0}
   _testProgress: 0.8
   _successThreshhold: 0.8
   _delayToNextLevel: 1.5
+  _vsShowOffDelay: 3
 --- !u!4 &93792594
 Transform:
   m_ObjectHideFlags: 0
