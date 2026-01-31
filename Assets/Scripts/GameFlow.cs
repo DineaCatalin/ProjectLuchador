@@ -79,6 +79,8 @@ public class GameFlow : MonoBehaviour
             Debug.LogError($"{nameof(GameStats)}: _luchadors.Count {_luchadors.Count} < _gameStats.CurrentLevel {_gameStats.CurrentLevel}");
         }
 
+        _facePartSpawner.DeleteFaceParts();
+
         var template = _luchadors[_gameStats.CurrentLevel - 1];
         _currentLuchador = Instantiate(template);
         _currentLuchador.transform.position = _luchardorsSpawnPosition;

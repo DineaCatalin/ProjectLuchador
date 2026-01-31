@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -12,7 +13,7 @@ public class FacePartSpawner : MonoBehaviour
     [SerializeField] private float spawnMoveDuration = 0.35f;
     [SerializeField] private Ease spawnMoveEase = Ease.OutQuad;
     [SerializeField] private float spawnScale = 1f;
-    [SerializeField] private RectTransform previewArea;
+    [SerializeField] private Transform previewArea;
     [SerializeField] private int previewCount = 20;
     [SerializeField] private bool spawnPreviewOnStart = true;
     [SerializeField] private bool ensurePreviewMask = true;
@@ -81,81 +82,10 @@ public class FacePartSpawner : MonoBehaviour
         Spawn(facePart);
     }
 
-    public void SpawnPreview(FacePartType type)
-    {
-        if (previewCount <= 0)
-        {
-            return;
-        }
-
-        if (previewArea == null)
-        {
-            Debug.LogWarning("FacePartSpawner has no previewArea assigned.");
-            return;
-        }
-
-        ClearPreview();
-
-        for (int i = 0; i < previewCount; i++)
-        {
-            if (database.TryGetRandom(type, out FacePart facePart))
-            {
-                Vector2 localPos = GetRandomLocalPoint(previewArea);
-                Spawn(facePart, previewArea, localPos, false, false, null);
-            }
-        }
-    }
-
-    public void SpawnPreviewByIndex(int typeIndex)
-    {
-        if (typeIndex < 0 || typeIndex >= System.Enum.GetValues(typeof(FacePartType)).Length)
-        {
-            Debug.LogWarning($"Invalid FacePartType index {typeIndex}.");
-            return;
-        }
-
-        SpawnPreview((FacePartType)typeIndex);
-    }
-
-    public void SpawnPreviewMixed()
-    {
-        if (previewCount <= 0)
-        {
-            return;
-        }
-
-        if (previewArea == null)
-        {
-            Debug.LogWarning("FacePartSpawner has no previewArea assigned.");
-            return;
-        }
-
-        ClearPreview();
-
-        for (int i = 0; i < previewCount; i++)
-        {
-            if (database.TryGetAnyRandom(out FacePart facePart))
-            {
-                Vector2 localPos = GetRandomLocalPoint(previewArea);
-                Spawn(facePart, previewArea, localPos, false, false, null);
-            }
-        }
-    }
-
     private void Start()
     {
         manualSpawnCount = 0;
         UpdateManualSpawnUI();
-
-        if (ensurePreviewMask && previewArea != null)
-        {
-            EnsurePreviewMask();
-        }
-
-        if (spawnPreviewOnStart)
-        {
-            SpawnPreviewMixed();
-        }
     }
 
     private void Spawn(FacePart facePart)
@@ -181,6 +111,17 @@ public class FacePartSpawner : MonoBehaviour
         Spawn(facePart, parent, spawnPosition, true, true, spawnMoveTargetArea);
     }
 
+    private List<GameObject> _faceParts = new();
+
+    public void DeleteFaceParts()
+    {
+        foreach (var face in _faceParts)
+        {
+            Destroy(face.gameObject);
+        }
+        _faceParts.Clear();
+    }
+
     private void Spawn(
         FacePart facePart,
         Transform parent,
@@ -194,7 +135,8 @@ public class FacePartSpawner : MonoBehaviour
             return;
         }
 
-        GameObject go = Instantiate(facePart.FacePartPrefab, parent);
+        var go = Instantiate(facePart.FacePartPrefab, parent);
+        _faceParts.Add(go);
         go.name = $"FacePart_{facePart.Id}";
         if (spawnScale != 1f)
         {
@@ -211,43 +153,10 @@ public class FacePartSpawner : MonoBehaviour
             go.transform.position = new Vector3(localPosition.x, localPosition.y, go.transform.position.z);
         }
 
-        if (moveTargetArea != null)
-        {
-            Vector3 targetPos = GetRandomWorldPoint(moveTargetArea);
-            if (rect != null)
-            {
-                rect.DOMove(targetPos, spawnMoveDuration)
-                    .SetEase(spawnMoveEase)
-                    .SetTarget(rect);
-            }
-            else
-            {
-                go.transform.DOMove(targetPos, spawnMoveDuration)
-                    .SetEase(spawnMoveEase)
-                    .SetTarget(go.transform);
-            }
-        }
-
         if (playAudio && facePart.AudioClip != null)
         {
             AudioManager.RequestPlay(facePart.AudioClip);
         }
-    }
-
-    private void ClearPreview()
-    {
-        for (int i = previewArea.childCount - 1; i >= 0; i--)
-        {
-            Destroy(previewArea.GetChild(i).gameObject);
-        }
-    }
-
-    private static Vector2 GetRandomLocalPoint(RectTransform rectTransform)
-    {
-        Rect rect = rectTransform.rect;
-        float x = Random.Range(rect.xMin, rect.xMax);
-        float y = Random.Range(rect.yMin, rect.yMax);
-        return new Vector2(x, y);
     }
 
     private static Vector3 GetRandomWorldPoint(Transform area)
@@ -260,8 +169,7 @@ public class FacePartSpawner : MonoBehaviour
         RectTransform rectTransform = area as RectTransform;
         if (rectTransform != null)
         {
-            Vector2 localPoint = GetRandomLocalPoint(rectTransform);
-            return rectTransform.TransformPoint(localPoint);
+            return rectTransform.TransformPoint(Vector3.zero);
         }
 
         Collider2D collider2d = area.GetComponent<Collider2D>();
@@ -300,14 +208,6 @@ public class FacePartSpawner : MonoBehaviour
         }
 
         gameObject.layer = layer;
-    }
-
-    private void EnsurePreviewMask()
-    {
-        if (previewArea.GetComponent<RectMask2D>() == null)
-        {
-            previewArea.gameObject.AddComponent<RectMask2D>();
-        }
     }
 
     private bool CanManualSpawn()
