@@ -72,6 +72,7 @@ public static class FacePartPrefabGenerator
             normalChild.transform.SetParent(root.transform, false);
             SpriteRenderer normalRenderer = normalChild.AddComponent<SpriteRenderer>();
             normalRenderer.sprite = normal;
+            normalRenderer.sortingOrder = 1;
 
             if (mask != null)
             {
@@ -79,6 +80,7 @@ public static class FacePartPrefabGenerator
                 maskChild.transform.SetParent(root.transform, false);
                 SpriteRenderer maskRenderer = maskChild.AddComponent<SpriteRenderer>();
                 maskRenderer.sprite = mask;
+                maskRenderer.sortingOrder = 1;
                 SetLayerIfExists(maskChild, FaceLayerName);
             }
 
