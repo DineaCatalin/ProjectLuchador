@@ -18,7 +18,7 @@ public class TextureOverlap : MonoBehaviour
         newTex = new Texture2D(faceRT.width, faceRT.height, TextureFormat.ARGB32, true, true);
     }
 
-    void PerformEvaluation()
+    public float PerformEvaluation()
     {
         whiteFound = 0;
         maskWhites = 0;
@@ -73,16 +73,7 @@ public class TextureOverlap : MonoBehaviour
         if(maskWhites > 0)
             ratio = (float)whiteFound / (float)maskWhites;
         Debug.Log("You got " + whiteFound + " pixels out of " + maskWhites + " with accuracy of " + (ratio*100f) + "%");
-        
-    }
-    
-    void Update()
-    {
-        timeCounter += Time.deltaTime;
-        if(timeCounter >= 1f)
-        {
-            timeCounter = 0;
-            PerformEvaluation();
-        }
+
+        return ratio;
     }
 }

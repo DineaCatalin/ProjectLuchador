@@ -1192,6 +1192,7 @@ MonoBehaviour:
   _progressSlider: {fileID: 347303839}
   _progressImage: {fileID: 645696656}
   _facePartSpawner: {fileID: 194514099}
+  _textureOverlap: {fileID: 1479136181}
   _testProgress: 0.8
   _successThreshhold: 0.8
   _delayToNextLevel: 1.5

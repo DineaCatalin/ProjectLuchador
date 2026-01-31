@@ -18,6 +18,7 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Image _progressImage;
     [SerializeField] private FacePartSpawner _facePartSpawner;
+    [SerializeField] private TextureOverlap _textureOverlap;
 
     private Vector3 _initialMaskPosition;
     
@@ -76,15 +77,17 @@ public class GameFlow : MonoBehaviour
         _progressSlider.value = 0;
         _progressImage.gameObject.SetActive(true);
         _progressImage.color = Color.darkRed;
+
+        var successRate = _textureOverlap.PerformEvaluation();
         
         _maskTransform.DOMove(_faceTransform.position, _progressShowTime).SetEase(Ease.OutQuad);
-        
-        _progressSlider.DOValue(_testProgress, _progressShowTime).SetEase(Ease.Linear).OnUpdate(() => {
+
+        _progressSlider.DOValue(successRate, _progressShowTime).SetEase(Ease.Linear).OnUpdate(() => {
             if (_progressSlider.value >= _successThreshhold) 
             {
                 _progressImage.color = Color.green;
             }
-            else 
+            else
             {
                 _progressImage.color = Color.red; 
             }
