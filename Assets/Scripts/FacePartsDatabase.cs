@@ -8,6 +8,19 @@ public class FacePartsDatabase : ScriptableObject
 
     public IReadOnlyList<FacePart> FaceParts => faceParts;
 
+    public bool TryGetAnyRandom(out FacePart facePart)
+    {
+        facePart = null;
+        if (faceParts == null || faceParts.Count == 0)
+        {
+            return false;
+        }
+        int targetIndex = Random.Range(0, faceParts.Count);
+        
+        facePart = faceParts[targetIndex];
+        return true;
+    }
+
     public bool TryGetRandom(FacePartType type, out FacePart facePart)
     {
         facePart = null;
