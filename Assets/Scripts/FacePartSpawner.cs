@@ -8,6 +8,7 @@ public class FacePartSpawner : MonoBehaviour
     [SerializeField] private FacePartsDatabase database;
     [SerializeField] private RectTransform spawnPoint;
     [SerializeField] private RectTransform partsParent;
+    [SerializeField] private RectTransform placedPartsParent;
     [SerializeField] private RectTransform spawnMoveTargetArea;
     [SerializeField] private float spawnMoveDuration = 0.35f;
     [SerializeField] private Ease spawnMoveEase = Ease.OutQuad;
@@ -21,6 +22,7 @@ public class FacePartSpawner : MonoBehaviour
     [SerializeField] private string manualSpawnFormat = "{0}/{1}";
     [SerializeField] private string manualSpawnUnlimitedText = "∞";
     [SerializeField] private AudioClip manualSpawnErrorClip;
+    [SerializeField] private Timer manualSpawnTimer;
 
     private int manualSpawnCount;
 
@@ -165,7 +167,9 @@ public class FacePartSpawner : MonoBehaviour
             return;
         }
 
-        RectTransform parent = partsParent != null ? partsParent : spawnPoint;
+        RectTransform parent = placedPartsParent != null
+            ? placedPartsParent
+            : (partsParent != null ? partsParent : spawnPoint);
         if (parent == null)
         {
             Debug.LogWarning("FacePartSpawner has no spawnPoint or partsParent assigned.");
@@ -229,8 +233,8 @@ public class FacePartSpawner : MonoBehaviour
                 canvasToUse = parent.GetComponentInParent<Canvas>();
             }
 
-            FacePartDraggable draggableComponent = go.AddComponent<FacePartDraggable>();
-            draggableComponent.Init(canvasToUse, parent, facePart.AudioClip);
+        FacePartDraggable draggableComponent = go.AddComponent<FacePartDraggable>();
+        draggableComponent.Init(canvasToUse, parent, facePart.AudioClip, manualSpawnTimer);
         }
 
         if (moveTargetArea != null)
@@ -319,12 +323,40 @@ public class FacePartSpawner : MonoBehaviour
 
     private bool CanManualSpawn()
     {
+        if (manualSpawnTimer != null && !manualSpawnTimer.IsRunning)
+        {
+            return false;
+        }
+
         if (manualSpawnLimit <= 0)
         {
             return true;
         }
 
         return manualSpawnCount < manualSpawnLimit;
+    }
+
+    public void ResetManualState()
+    {
+        manualSpawnCount = 0;
+        UpdateManualSpawnUI();
+        ClearPlacedParts();
+    }
+
+    public void ClearPlacedParts()
+    {
+        RectTransform parent = placedPartsParent != null
+            ? placedPartsParent
+            : (partsParent != null ? partsParent : spawnPoint);
+        if (parent == null)
+        {
+            return;
+        }
+
+        for (int i = parent.childCount - 1; i >= 0; i--)
+        {
+            Destroy(parent.GetChild(i).gameObject);
+        }
     }
 
     private void UpdateManualSpawnUI()

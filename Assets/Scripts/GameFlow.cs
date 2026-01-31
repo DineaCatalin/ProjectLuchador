@@ -14,6 +14,7 @@ public class GameFlow : MonoBehaviour
     [SerializeField] private RectTransform _faceTransform;
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Image _progressImage;
+    [SerializeField] private FacePartSpawner _facePartSpawner;
 
     private Vector3 _initialMaskPosition;
     
@@ -49,6 +50,7 @@ public class GameFlow : MonoBehaviour
         _timer.StartTimer(_timerTime, OnTimerDone);
         _progressSlider.gameObject.SetActive(false);
         _progressImage.gameObject.SetActive(false);
+        _facePartSpawner?.ResetManualState();
     }
     
     private void OnButtonClicked()

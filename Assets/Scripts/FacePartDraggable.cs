@@ -9,12 +9,15 @@ public class FacePartDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler,
     private Canvas rootCanvas;
     private CanvasGroup canvasGroup;
     private AudioClip dragReleaseClip;
+    private Timer dragTimer;
+    private bool dragAllowed;
 
-    public void Init(Canvas canvas, RectTransform parent, AudioClip onReleaseClip)
+    public void Init(Canvas canvas, RectTransform parent, AudioClip onReleaseClip, Timer timer)
     {
         rootCanvas = canvas;
         dragParent = parent;
         dragReleaseClip = onReleaseClip;
+        dragTimer = timer;
     }
 
     private void Awake()
@@ -29,6 +32,12 @@ public class FacePartDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        dragAllowed = dragTimer == null || dragTimer.IsRunning;
+        if (!dragAllowed)
+        {
+            return;
+        }
+
         if (canvasGroup != null)
         {
             canvasGroup.blocksRaycasts = false;
@@ -37,6 +46,11 @@ public class FacePartDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!dragAllowed)
+        {
+            return;
+        }
+
         if (dragParent == null)
         {
             return;
@@ -54,6 +68,11 @@ public class FacePartDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!dragAllowed)
+        {
+            return;
+        }
+
         if (canvasGroup != null)
         {
             canvasGroup.blocksRaycasts = true;
