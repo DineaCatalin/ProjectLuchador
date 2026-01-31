@@ -7,13 +7,17 @@ public class GameFlow : MonoBehaviour
     public static GameFlow Instance { get; private set; }
     
     [SerializeField] private float _timerTime = 10f;
+    [SerializeField] private float _faceMoveUpTime = 1.5f;
+    [SerializeField] private float _faceShowTime = 2;
     [SerializeField] private float _progressShowTime = 10f;
     [SerializeField] private Timer _timer;
     [SerializeField] private Button _checkMaskButton;
-    [SerializeField] private RectTransform _maskTransform;
-    [SerializeField] private RectTransform _faceTransform;
+    [SerializeField] private Transform _maskTransform;
+    [SerializeField] private Transform _faceTransform;
+    [SerializeField] private Transform _faceOutsidePositonTransform;
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Image _progressImage;
+    [SerializeField] private FacePartSpawner _facePartSpawner;
 
     private Vector3 _initialMaskPosition;
     
@@ -46,9 +50,16 @@ public class GameFlow : MonoBehaviour
     {
         _maskTransform.position = _initialMaskPosition;
         _checkMaskButton.gameObject.SetActive(true);
-        _timer.StartTimer(_timerTime, OnTimerDone);
+        
         _progressSlider.gameObject.SetActive(false);
         _progressImage.gameObject.SetActive(false);
+
+        //_facePartSpawner?.ResetManualState();
+        DOVirtual.DelayedCall(_faceShowTime, () =>
+        {
+            _maskTransform.DOMove(_faceOutsidePositonTransform.position, _faceMoveUpTime).SetEase(Ease.OutQuad);
+            _timer.StartTimer(_timerTime, OnTimerDone);
+        });
     }
     
     private void OnButtonClicked()

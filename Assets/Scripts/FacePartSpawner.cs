@@ -101,7 +101,7 @@ public class FacePartSpawner : MonoBehaviour
             if (database.TryGetRandom(type, out FacePart facePart))
             {
                 Vector2 localPos = GetRandomLocalPoint(previewArea);
-                Spawn(facePart, previewArea, localPos, false, false, null);
+                Spawn(facePart, localPos, false, false, null);
             }
         }
     }
@@ -137,7 +137,7 @@ public class FacePartSpawner : MonoBehaviour
             if (database.TryGetAnyRandom(out FacePart facePart))
             {
                 Vector2 localPos = GetRandomLocalPoint(previewArea);
-                Spawn(facePart, previewArea, localPos, false, false, null);
+                Spawn(facePart, localPos, false, false, null);
             }
         }
     }
@@ -160,15 +160,8 @@ public class FacePartSpawner : MonoBehaviour
 
     private void Spawn(FacePart facePart)
     {
-        if (facePart == null || facePart.Sprite == null)
+        if (facePart == null || facePart.FacePartPrefab == null)
         {
-            return;
-        }
-
-        RectTransform parent = partsParent != null ? partsParent : spawnPoint;
-        if (parent == null)
-        {
-            Debug.LogWarning("FacePartSpawner has no spawnPoint or partsParent assigned.");
             return;
         }
 
@@ -176,75 +169,25 @@ public class FacePartSpawner : MonoBehaviour
         UpdateManualSpawnUI();
 
         Vector2 spawnPosition = spawnPoint != null ? spawnPoint.anchoredPosition : Vector2.zero;
-        Spawn(facePart, parent, spawnPosition, true, true, spawnMoveTargetArea);
+        Spawn(facePart, spawnPosition, true, true, spawnMoveTargetArea);
     }
 
     private void Spawn(
         FacePart facePart,
-        RectTransform parent,
         Vector2 localPosition,
         bool playAudio,
         bool draggable,
         RectTransform moveTargetArea)
     {
-        if (facePart == null || facePart.Sprite == null || parent == null)
+        if (facePart == null || facePart.FacePartPrefab == null)
         {
             return;
         }
 
-        GameObject go = new GameObject($"FacePart_{facePart.Id}");
-        go.transform.SetParent(parent, false);
+        GameObject go = Instantiate(facePart.FacePartPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);//new GameObject($"FacePart_{facePart.Id}");
+        //go.transform.SetParent(parent, false);
 
-        RectTransform rect = go.AddComponent<RectTransform>();
-        rect.anchoredPosition = localPosition;
-
-        if (facePart.MaskSprite != null)
-        {
-            SetLayerIfExists(go, "Face");
-
-            Image maskImage = go.AddComponent<Image>();
-            maskImage.sprite = facePart.MaskSprite;
-            maskImage.SetNativeSize();
-            maskImage.raycastTarget = true;
-
-            Image faceImage = EnsureImageChild(go.transform, "Face", facePart.Sprite, false);
-            if (faceImage != null)
-            {
-                faceImage.SetNativeSize();
-            }
-        }
-        else
-        {
-            Image image = go.AddComponent<Image>();
-            image.sprite = facePart.Sprite;
-            image.SetNativeSize();
-            image.raycastTarget = true;
-        }
-
-        if (draggable)
-        {
-            Canvas canvasToUse = rootCanvas;
-            if (canvasToUse == null)
-            {
-                canvasToUse = parent.GetComponentInParent<Canvas>();
-            }
-
-            FacePartDraggable draggableComponent = go.AddComponent<FacePartDraggable>();
-            draggableComponent.Init(canvasToUse, parent, facePart.AudioClip);
-        }
-
-        if (moveTargetArea != null)
-        {
-            Vector2 targetPos = GetRandomLocalPointInParent(moveTargetArea, parent);
-            rect.DOAnchorPos(targetPos, spawnMoveDuration)
-                .SetEase(spawnMoveEase)
-                .SetTarget(rect);
-        }
-
-        if (playAudio && facePart.AudioClip != null)
-        {
-            AudioManager.RequestPlay(facePart.AudioClip);
-        }
+        
     }
 
     private void ClearPreview()
