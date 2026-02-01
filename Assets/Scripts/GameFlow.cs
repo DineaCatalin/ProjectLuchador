@@ -89,6 +89,7 @@ public class GameFlow : MonoBehaviour
 
         var template = _luchadors[_gameStats.CurrentLevel - 1];
         _currentLuchador = Instantiate(template);
+        _facePartSpawner.SetManualSpawnLimit(_currentLuchador.MaxAmountOfParts);
         _luchadorsSpawned.Add(_currentLuchador);
         _facePartSpawner.PartsParent = _currentLuchador.FacePartsContainer;
         _currentLuchador.transform.position = _luchardorsSpawnPosition;

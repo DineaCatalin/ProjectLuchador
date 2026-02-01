@@ -52,9 +52,9 @@ MonoBehaviour:
   Mask: {fileID: 3234204613589767043}
   FaceTarget: {fileID: 3576318149085887120}
   FacePartsContainer: {fileID: 7006165203768608937}
-  MaxAmountOfParts: 10
+  MaxAmountOfParts: 8
   TimeLimit: 12
-  OverlapThreshold: 0.8
+  OverlapThreshold: 0.75
 --- !u!1 &1956862590217996869
 GameObject:
   m_ObjectHideFlags: 0

@@ -271,4 +271,11 @@ public class FacePartSpawner : MonoBehaviour
             AudioManager.RequestPlay(manualSpawnErrorClip);
         }
     }
+
+    public void SetManualSpawnLimit(int newLimit)
+    {
+        manualSpawnCount = 0;
+        manualSpawnLimit = newLimit;
+        UpdateManualSpawnUI();
+    }
 }

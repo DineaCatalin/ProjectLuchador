@@ -387,6 +387,6 @@ MonoBehaviour:
   Mask: {fileID: 4407786274261694037}
   FaceTarget: {fileID: 1456556940685302696}
   FacePartsContainer: {fileID: 4368082550898858691}
-  MaxAmountOfParts: 10
+  MaxAmountOfParts: 5
   TimeLimit: 15
-  OverlapThreshold: 0.8
+  OverlapThreshold: 0.69
