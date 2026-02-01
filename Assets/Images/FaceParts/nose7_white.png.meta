@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a60bc2f007ba41de78929c75f5920ee4
+guid: e82d05c532d1ef4fbaec6cc60f34bd49
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7850472830843473574
-    second: eye8_0
+      213: -6402563205218516374
+    second: nose7_white_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: eye8_0
+      name: nose7_white_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 140
-        height: 116
+        width: 149
+        height: 101
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6aec741327b72fc60800000000000000
-      internalID: 7850472830843473574
+      spriteID: a62c6f4efa68527a0800000000000000
+      internalID: -6402563205218516374
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      eye8_0: 7850472830843473574
+      nose7_white_0: -6402563205218516374
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -103,3 +103,23 @@ MonoBehaviour:
     facePartPrefab: {fileID: 308922085734396653, guid: f2c2ca305939d4d98b092ab0a29e0d43, type: 3}
     audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
     weight: 10
+  - id: eye7
+    type: 0
+    facePartPrefab: {fileID: 3780870652765987353, guid: 778338bc3011fdc1891a46b49bbc8577, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: eye8
+    type: 0
+    facePartPrefab: {fileID: 4936014111843065360, guid: 6f1ee7479df87179c8bba2222e6d4656, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: mouth7
+    type: 2
+    facePartPrefab: {fileID: 4296739516740402737, guid: 4f816ff9ef4dcdd1e9fca0cc5a473b51, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
+  - id: nose7
+    type: 1
+    facePartPrefab: {fileID: 888702182486756413, guid: 7eb53743b920785bb9ef19d9359a5934, type: 3}
+    audioClip: {fileID: 8300000, guid: 8645c0c55ae3841bd91a4a12352d01a5, type: 3}
+    weight: 10
